@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/styleCarousel.css">
+</head>
+<body>
+    <div class="scene" style="--n: 12">
+        <div class="a3d">
+            <div class="card-frame" style="--i: 0"><a href="#"><img class="card" src="../img/1.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 1"><a href="#"><img class="card" src="../img/2.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 2"><a href="#"><img class="card" src="../img/3.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 3"><a href="#"><img class="card" src="../img/4.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 4"><a href="#"><img class="card" src="../img/5.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 5"><a href="#"><img class="card" src="../img/6.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 6"><a href="#"><img class="card" src="../img/7.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 7"><a href="#"><img class="card" src="../img/8.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 8"><a href="#"><img class="card" src="../img/9.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 9"><a href="#"><img class="card" src="../img/10.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 10"><a href="#"><img class="card" src="../img/11.jpg" alt=""></a></div>
+            <div class="card-frame" style="--i: 11"><a href="#"><img class="card" src="../img/12.png" alt=""></a></div>
+        </div>
+    </div>
+
+    <button class="toggle-btn" id="toggleBtn">&#9654; Auto</button>
+
+    <script>
+        const a3d = document.querySelector('.a3d');
+        const btn = document.getElementById('toggleBtn');
+        let angle = 0;
+        let autoMode = true; // empieza en modo auto
+
+        // Activar animación automática al cargar
+        a3d.classList.add('auto-spin');
+        btn.textContent = '✋ Scroll';
+
+        // Modo scroll: el usuario controla la rotación con la rueda del mouse
+        window.addEventListener('wheel', (e) => {
+            if (autoMode) return; // si está en auto, ignorar el scroll
+            angle += e.deltaY / 3;
+            a3d.style.transform = `rotateY(${angle}deg)`;
+        });
+
+        // Botón: alterna entre modo auto y modo scroll
+        btn.addEventListener('click', () => {
+            autoMode = !autoMode;
+
+            if (autoMode) {
+                // Activar animación CSS automática
+                a3d.style.transform = '';
+                a3d.classList.add('auto-spin');
+                btn.textContent = '\u270B Scroll';
+            } else {
+                // Volver a modo scroll: quitar animación y retomar el ángulo actual
+                a3d.classList.remove('auto-spin');
+                // Leer el ángulo actual de la animación para que no salte al quitar el CSS
+                const matrix = new DOMMatrix(getComputedStyle(a3d).transform);
+                angle = Math.round(Math.atan2(matrix.m13, matrix.m33) * (180 / Math.PI));
+                a3d.style.transform = `rotateY(${angle}deg)`;
+                btn.textContent = '\u25B6 Auto';
+            }
+        });
+    </script>
+</body>
+</html>

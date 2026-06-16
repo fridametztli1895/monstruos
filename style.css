@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Fruktur&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fruktur', cursive;   
+}
+
+body{
+    background: #010405;
+}
+
+#hero{
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#hero::before{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to top, #010405, transparent);
+    z-index: 10000;
+}
+
+#hero img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+}
+
+.sec {
+    position: relative;
+    padding: 100px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.werewolf-sec{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.content {
+    width: 100%;
+}
+
+.sec h2{
+    font-size: 5em;
+    color: #ff9425;
+    margin-bottom: 1em;
+}
+
+.sec p{
+    color: #fff;
+    font-size: 1.2em;
+    line-height: 1.5em;
+    font-family: consolas;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 99999;
+    background: rgba(5, 1, 1, 0.85);
+    backdrop-filter: blur(8px);
+}
+
+.navbar ul {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    list-style: none;
+    padding: 18px 40px;
+    margin: 0;
+}
+
+.navbar ul li a {
+    color: #ff9425;
+    text-decoration: none;
+    font-size: 1em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.navbar ul li a:hover {
+    color: #fff;
+}
+
+@media (min-width: 2049px) {
+    section,
+    .sec {
+        max-width: 2049px;
+        margin: 0 auto;
+    }
+}
+
+.about-me {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.about-image {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.about-text {
+    flex: 1;
+    text-align: justify;
+}
+
+.ref-movies{
+    color: #ff9425;
+}
