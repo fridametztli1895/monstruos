@@ -1,0 +1,184 @@
+
+.scene, .a3d{
+    display: grid;
+}
+
+.scene{
+    overflow: hidden;
+    perspective: 35em;
+    mask: linear-gradient(90deg, #0000, red 20% 80%, #0000);
+}
+
+.a3d{
+    place-self: center;
+    transform-style: preserve-3d;
+    /* La rotación ahora la controla JavaScript mediante el evento wheel */
+}
+
+@keyframes ry{
+    to{
+        transform: rotateY(1turn);
+    }
+}
+
+/* ─── MARCO DEL ROLLO DE PELÍCULA ────────────────────────────────────────────
+   Cada .card-frame es el "cuadro" negro que rodea la imagen,
+   simulando el borde de un rollo de película fotográfica. */
+.card-frame {
+    /* --w: ancho fijo de cada tarjeta */
+    --w: 17.5em;
+
+    /* --ba: ángulo que le toca a cada tarjeta dentro del círculo.
+       Se divide 1 vuelta completa (360°) entre el total de tarjetas (--n).
+       Ejemplo: con 12 tarjetas → 360/12 = 30° por tarjeta */
+    --ba: calc(1turn / var(--n));
+
+    /* Todas las tarjetas ocupan la misma celda del grid (se apilan) */
+    grid-area: 1 / 1;
+
+    width: var(--w);
+
+    /* Proporción 7:10 = aspecto vertical, similar a una tira de película */
+    aspect-ratio: 7 / 10;
+
+    /* Sin bordes redondeados → esquinas rectas como un rollo real */
+    border-radius: 0;
+
+    /* Oculta la cara trasera de la tarjeta cuando está girada 180°,
+       evita que se vea "al revés" durante la rotación */
+    backface-visibility: hidden;
+
+    /* TRANSFORM en dos pasos:
+       1. rotateY → gira cada tarjeta su ángulo correspondiente (--i * --ba)
+          para distribuirlas en círculo. Ej: tarjeta 0 = 0°, tarjeta 1 = 30°...
+       2. translateZ → empuja cada tarjeta hacia afuera del centro
+          para formar el cilindro. La fórmula usa tan() para calcular
+          exactamente el radio necesario para que los bordes se toquen */
+    transform:
+        rotateY(calc(var(--i) * var(--ba)))
+        translateZ(calc(-1 * (.5 * var(--w)) / tan(.5 * var(--ba))));
+
+    /* Fondo negro: es el color visible en los bordes laterales del frame */
+    background: black;
+
+    /* Espacio interior: 18px arriba/abajo (donde irán las perforaciones)
+       y 10px a los lados para el borde lateral negro */
+    padding: 18px 10px;
+
+    /* box-sizing: border-box hace que el padding NO aumente el tamaño total,
+       sino que reste espacio del interior disponible para la imagen */
+    box-sizing: border-box;
+
+    /* Necesario para posicionar los pseudo-elementos ::before y ::after */
+    position: relative;
+
+    /* Oculta cualquier desbordamiento (por si la imagen sobresale) */
+    overflow: hidden;
+}
+
+/* ─── PERFORACIONES DEL ROLLO (franjas arriba y abajo) ───────────────────────
+   Los pseudo-elementos ::before y ::after no tienen contenido propio (content:'')
+   pero sirven para dibujar las franjas de perforaciones con un gradiente. */
+.card-frame::before,
+.card-frame::after {
+    content: '';           /* Obligatorio para que aparezcan los pseudo-elementos */
+    position: absolute;    /* Se posicionan respecto al .card-frame (position: relative) */
+    left: 0;
+    right: 0;              /* Se estiran de lado a lado */
+    height: 10px;          /* Alto de la franja de perforaciones */
+
+    /* repeating-linear-gradient repite el mismo patrón infinitamente:
+       - 0px   → 4px  : negro  (separación entre perforaciones)
+       - 4px   → 14px : blanco (la perforación en sí, 10px de ancho)
+       - 14px  → 18px : negro  (separación al otro lado)
+       Esto se repite cada 18px a lo largo de toda la franja */
+    background: repeating-linear-gradient(
+        90deg,
+        black 0px,
+        black 4px,
+        white 4px,
+        white 14px,
+        black 14px,
+        black 18px
+    );
+
+    /* z-index: 1 para que queden por encima de la imagen si hubiera solapamiento */
+    z-index: 1;
+}
+
+/* Franja superior: pegada al borde de arriba con 4px de margen */
+.card-frame::before {
+    top: 4px;
+}
+
+/* Franja inferior: pegada al borde de abajo con 4px de margen */
+.card-frame::after {
+    bottom: 4px;
+}
+
+/* ─── IMAGEN DENTRO DEL FRAME ────────────────────────────────────────────────
+   La imagen llena todo el espacio que el padding dejó libre dentro del frame */
+.card-frame a {
+    display: block;   /* El <a> ocupa todo el espacio disponible */
+    width: 100%;
+    height: 100%;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+
+    /* object-fit: cover escala la imagen para cubrir todo el espacio
+       sin deformarla, recortando si es necesario */
+    object-fit: cover;
+
+    /* Sin bordes redondeados, igual que el frame */
+    border-radius: 0;
+
+    /* display: block elimina el espacio extra que los <img> tienen por defecto */
+    display: block;
+}
+
+html, body {
+    display: grid;
+}
+
+html{
+    height: 100%;
+}
+
+body{
+    /* background: #fff3ed; */
+    background: #580808;
+}
+
+/* Clase que se agrega/quita con el botón para activar la rotación automática */
+.a3d.auto-spin {
+    animation: ry 32s linear infinite;
+}
+
+/* Botón flotante para cambiar entre modo auto y modo scroll */
+.toggle-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.6rem 1.2rem;
+    background: black;
+    color: white;
+    border: 2px solid white;
+    border-radius: 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 100;
+    transition: background 0.2s, color 0.2s;
+}
+
+.toggle-btn:hover {
+    background: white;
+    color: black;
+}
+
+h1{
+    z-index: 10;
+    border: none;
+}
