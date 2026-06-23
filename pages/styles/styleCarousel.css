@@ -7,6 +7,7 @@
     overflow: hidden;
     perspective: 35em;
     mask: linear-gradient(90deg, #0000, red 20% 80%, #0000);
+    height: calc(100vh - 57px);
 }
 
 .a3d{

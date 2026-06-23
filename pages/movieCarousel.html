@@ -5,8 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles/styleCarousel.css">
+    <style>
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 99999;
+            background: rgba(236, 236, 236, 0);
+            backdrop-filter: blur(8px);
+        }
+        .navbar ul {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            list-style: none;
+            padding: 18px 40px;
+            margin: 0;
+        }
+        .navbar ul li a {
+            color: #ff9425;
+            text-decoration: none;
+            font-size: 1em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            font-family: 'Fruktur', cursive;
+        }
+        .navbar ul li a:hover {
+            color: #fff;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fruktur&display=swap" rel="stylesheet">
 </head>
 <body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="../index.html#home">Inicio</a></li>
+            <li><a href="../index.html#about">Acerca del autor</a></li>
+            <li><a href="../index.html#movies">Películas</a></li>
+            <li><a href="../index.html#more">Vampiros VS Hombres Lobo</a></li>
+        </ul>
+    </nav>
     <div class="scene" style="--n: 12">
         <div class="a3d">
             <div class="card-frame" style="--i: 0"><a href="#"><img class="card" src="../img/1.jpg" alt=""></a></div>
